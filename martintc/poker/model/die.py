@@ -1,4 +1,5 @@
 import random
+from martintc.poker.model.utils import Utils
 
 '''
 Created on 18 feb. 2017
@@ -15,14 +16,18 @@ class Die(object):
     LETTERS = {1:'N', 2:'R', 3:'J', 4:'Q', 5:'K', 6:'A'}
     
     # The inverse dict, for reverse conversion (letter to number)
-    NUMBERS = dict([(v,k) for (k,v) in LETTERS.items()])
+    NUMBERS = Utils.reverseDict(LETTERS)
     
     # FACES = [1,2,3,4,5,6]
-    FACES = sorted([key for key in LETTERS.keys()])
+    FACES = sorted(LETTERS.keys())
 
-    def __init__(self, throw=True, hide=True, value=None):
+    def __init__(self, value=None, throw=True, hide=True):
         '''
         Constructor
+        
+        :param throw: if True, it assigns a random value to this Die
+        :param hide: if True, it hides this die and sets its hidden status to True
+        :param value: 
         '''
         if value:
             self.val = value

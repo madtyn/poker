@@ -5,20 +5,41 @@ Created on 18 feb. 2017
 
 @author: madtyn
 '''
-
-class Utils(object, metaclass=Singleton):
+# Make this a Singleton?
+class Utils(object):
     '''
-    Class with math functions
+    Class with useful functions
     '''
+    
     @staticmethod
     def fact(i, current_factorial=1):
+        '''
+        The factorial function
+        :param i: the number for calculating the factorial
+        :param current_factorial: the acumulated product
+        '''
         if i == 1:
             return current_factorial
         else:
             return Utils.fact(i - 1, current_factorial * i)
     
     @staticmethod
+    def reverseDict(dic):
+        '''
+        Returns a reversed dict switching keys with values.
+        Example:
+            reverseDict({k1:v1, k2:v2,...}) == {v1:k1, v2:k2, ...}
+        :param dic: thedict to reverse
+        '''
+        return dict([(v,k) for (k,v) in dic.items()])
+    
+    @staticmethod
     def C(n, r=1):
+        '''
+        Statistical combinations
+        :param n: number of elements to be combined
+        :param r: number of elements to be taken for each combination
+        '''
         return Utils.fact(n) / (Utils.fact(r) * Utils.fact(n-r))
     
     @staticmethod
