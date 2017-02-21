@@ -1,10 +1,19 @@
 from martintc.poker.model.singleton import Singleton
 from fractions import Fraction
+import wrapt
 '''
 Created on 18 feb. 2017
 
 @author: madtyn
 '''
+
+@wrapt.decorator
+def compFunc(wrapped, instance, args, kwargs):
+    other = args[0]
+    if instance.__class__ is other.__class__:
+        return wrapped(other)
+    return NotImplemented
+
 # Make this a Singleton?
 class Utils(object):
     '''
