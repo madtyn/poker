@@ -4,6 +4,8 @@ Created on 19 feb. 2017
 @author: madtyn
 '''
 from enum import Enum
+from martintc.poker.model.utils import compFunc
+
 class Hand(Enum):
     '''
     This will represent a hand in the game. Useful for comparisons
@@ -25,14 +27,15 @@ class Hand(Enum):
         self.val = val
         self.struct = struct
         
+    @compFunc
     def __eq__(self, other):
         '''
         When using the operator (==), compares if this hand's value is equal to another one
         :param other: the other hand to compare with
         '''
-        if self.__class__ is other.__class__:
-            return self.val == other.val
-    
+        return self.val == other.val
+
+    @compFunc
     def __ne__(self,other):
         '''
         When using the operator (!=), compares if this hand's value is different to another one
@@ -40,41 +43,37 @@ class Hand(Enum):
         '''
         return not self.__eq__(other)
     
+    @compFunc
     def __ge__(self, other):
         '''
         When using the operator (>=), compares if this hand's value is greater or equal than another one
         :param other: the other hand to compare with
         '''
-        if self.__class__ is other.__class__:
-            return self.val >= other.val
-        return NotImplemented
-    
+        return self.val >= other.val
+
+    @compFunc
     def __gt__(self, other):
         '''
         When using the operator (>), compares if this hand's value is greater than another one
         :param other: the other hand to compare with
         '''
-        if self.__class__ is other.__class__:
-            return self.val > other.val
-        return NotImplemented
+        return self.val > other.val
     
+    @compFunc
     def __le__(self, other):
         '''
         When using the operator (<=), compares if this hand's value is less than another one
         :param other: the other hand to compare with
         '''
-        if self.__class__ is other.__class__:
-            return self.val <= other.val
-        return NotImplemented
+        return self.val <= other.val
     
+    @compFunc
     def __lt__(self, other):
         '''
         When using the operator (<), compares if this hand's value is less than another one
         :param other: the other hand to compare with
         '''
-        if self.__class__ is other.__class__:
-            return self.val < other.val
-        return NotImplemented
+        return self.val < other.val
     
     def __str__(self):
         '''
