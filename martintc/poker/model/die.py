@@ -1,5 +1,5 @@
 import random
-from martintc.poker.model.utils import Utils
+from martintc.poker.model.utils import Utils, compFunc
 
 '''
 Created on 18 feb. 2017
@@ -66,7 +66,8 @@ class Die(object):
         if self.val and self.val not in Die.FACES:
             raise ValueError('Die value out of bounds: {}'.fomat(self.val))
         
-    # SORTING FUNCTIONS 
+    # SORTING FUNCTIONS
+    @compFunc
     def __eq__(self, other):
         '''
         When using the operator (==), compares if this die's value is equal to another one
@@ -74,6 +75,7 @@ class Die(object):
         '''
         return self.val == other.val
     
+    @compFunc
     def __ne__(self, other):
         '''
         When using the operator (!=), compares if this die's value is different to another one
@@ -81,6 +83,7 @@ class Die(object):
         '''
         return not self.__eq__(other)
     
+    @compFunc
     def __ge__(self, other):
         '''
         When using the operator (>=), compares if this die's value is greater or equal than another one
@@ -88,6 +91,7 @@ class Die(object):
         '''
         return self.val >= other.val
     
+    @compFunc
     def __gt__(self, other):
         '''
         When using the operator (>), compares if this die's value is greater than another one
@@ -95,6 +99,7 @@ class Die(object):
         '''
         return self.val > other.val
     
+    @compFunc
     def __le__(self, other):
         '''
         When using the operator (<=), compares if this die's value is less than another one
@@ -102,13 +107,14 @@ class Die(object):
         '''
         return self.val <= other.val
 
+    @compFunc
     def __lt__(self, other):
         '''
         When using the operator (<), compares if this die's value is less than another one
         :param other: the other die to compare with
         '''
         return self.val < other.val
-    
+
     def __repr__(self, *args, **kwargs):
         '''
         Unambiguous string representation for this object, 
