@@ -21,7 +21,7 @@ class Die(object):
     # FACES = [1,2,3,4,5,6]
     FACES = sorted(LETTERS.keys())
 
-    def __init__(self, value=None, throw=True, hide=True):
+    def __init__(self, value=False, throw=True, hide=True):
         '''
         Constructor
         
@@ -29,7 +29,7 @@ class Die(object):
         :param hide: if True, it hides this die and sets its hidden status to True
         :param value: 
         '''
-        if value:
+        if value or value is None:
             self.val = value
         elif throw:
             self.throw()
@@ -120,16 +120,24 @@ class Die(object):
         Unambiguous string representation for this object, 
         useful for logging or debugging purposes
         '''
-        return '{0!s}'.format(self.val)
+        return '{0!s}{1}'.format(self.val, '?' if self.hidden else '')
     
     def __str__(self, *args, **kwargs):
         '''
         Nice representation for this object, 
         useful for showing in the app
         '''
-        return self.getLetter()
+        return (self.getLetter() if self.val else '_')+('?' if self.hidden else '')
 
 if __name__ == "__main__":
+    print(Die())
+    print(Die(hide=False))
+    print(Die(throw=False))
+    print(Die(throw=False, hide=False))
+    print(Die(3))
+    print(Die(4, hide=False))
+    print(Die(5, False))
+    print(Die(6, False, hide=False))
     dice = [Die() for _ in range(5)]
     print('dice = {0!r}'.format([str(d) for d in dice]))
     dice.sort()
