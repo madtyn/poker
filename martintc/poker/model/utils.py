@@ -1,4 +1,4 @@
-from martintc.poker.model.singleton import Singleton
+# from martintc.poker.model import Singleton
 from fractions import Fraction
 import wrapt
 '''
@@ -7,6 +7,7 @@ Created on 18 feb. 2017
 @author: madtyn
 '''
 
+
 @wrapt.decorator
 def compFunc(wrapped, instance, args, kwargs):
     other = args[0]
@@ -14,12 +15,13 @@ def compFunc(wrapped, instance, args, kwargs):
         return wrapped(other)
     return NotImplemented
 
+
 # Make this a Singleton?
 class Utils(object):
     '''
     Class with useful functions
     '''
-    
+
     @staticmethod
     def fact(i, current_factorial=1):
         '''
@@ -31,7 +33,7 @@ class Utils(object):
             return current_factorial
         else:
             return Utils.fact(i - 1, current_factorial * i)
-    
+
     @staticmethod
     def reverseDict(dic):
         '''
@@ -40,8 +42,8 @@ class Utils(object):
             reverseDict({k1:v1, k2:v2,...}) == {v1:k1, v2:k2, ...}
         :param dic: thedict to reverse
         '''
-        return dict([(v,k) for (k,v) in dic.items()])
-    
+        return dict([(v, k) for (k, v) in dic.items()])
+
     @staticmethod
     def C(n, r=1):
         '''
@@ -49,8 +51,8 @@ class Utils(object):
         :param n: number of elements to be combined
         :param r: number of elements to be taken for each combination
         '''
-        return Utils.fact(n) / (Utils.fact(r) * Utils.fact(n-r))
-    
+        return Utils.fact(n) / (Utils.fact(r) * Utils.fact(n - r))
+
     @staticmethod
     def prob(numberEqualDice, numberDiceToThrow, numValidFaces):
         '''
@@ -60,20 +62,21 @@ class Utils(object):
         # [6^(ndadosSobrantes)/6^(ndadosaTirar)]* (n caras validas)
         # return Math.pow((double)1/6,
         # numberEqualDice)*numValidFaces*(factorial(numberDiceToThrow)/(factorial(numberDiceToThrow-numberEqualDice)*factorial(numberEqualDice)));
-        
+
         :param numberEqualDice:
         :param numberDiceToThrow:
         :param numValidFaces:
         '''
         # TODO martintc Revisar especificamente todo el asunto matematico
         # With fraction use float(f) for a percentage
-        f1_6 = Fraction(1,6)
-        f5_6 = Fraction(5,6)
+        f1_6 = Fraction(1, 6)
+        f5_6 = Fraction(5, 6)
         return numValidFaces * (
-            ( ( f1_6 ** numberEqualDice) 
-              * (f5_6 ** (numberDiceToThrow - numberEqualDice)) 
-              * (Utils.C(numberDiceToThrow, numberEqualDice) - 1)) 
-                + ( f1_6 ** numberEqualDice))
+            ((f1_6 ** numberEqualDice)
+             * (f5_6 ** (numberDiceToThrow - numberEqualDice))
+             * (Utils.C(numberDiceToThrow, numberEqualDice) - 1))
+            + (f1_6 ** numberEqualDice)
+        )
 
 if __name__ == "__main__":
     print(Utils.fact(6))
