@@ -6,18 +6,19 @@ Created on 19 feb. 2017
 from enum import Enum
 from martintc.poker.model.utils import compFunc
 
+
 class Hand(Enum):
     '''
     This will represent a hand in the game. Useful for comparisons
     '''
-    NOTHING = (0,[1,1,1,1,1])
-    PAIR = (1,[2,1,1,1])
-    DOUBLE_PAIR = (2,[2,2,1])
-    THREE_OF_KIND = (3,[3,1,1])
-    FULL_HOUSE = (4,[3,2])
-    FOUR_OF_KIND = (5,[4,1])
-    FIVE_OF_KIND = (6,[5])
-    
+    NOTHING = (0, [1, 1, 1, 1, 1])
+    PAIR = (1, [2, 1, 1, 1])
+    DOUBLE_PAIR = (2, [2, 2, 1])
+    THREE_OF_KIND = (3, [3, 1, 1])
+    FULL_HOUSE = (4, [3, 2])
+    FOUR_OF_KIND = (5, [4, 1])
+    FIVE_OF_KIND = (6, [5])
+
     def __init__(self, val, struct):
         '''
         Constructor
@@ -26,7 +27,7 @@ class Hand(Enum):
         '''
         self.val = val
         self.struct = struct
-        
+
     @compFunc
     def __eq__(self, other):
         '''
@@ -36,13 +37,13 @@ class Hand(Enum):
         return self.val == other.val
 
     @compFunc
-    def __ne__(self,other):
+    def __ne__(self, other):
         '''
         When using the operator (!=), compares if this hand's value is different to another one
         :param other: the other hand to compare with
         '''
         return not self.__eq__(other)
-    
+
     @compFunc
     def __ge__(self, other):
         '''
@@ -58,7 +59,7 @@ class Hand(Enum):
         :param other: the other hand to compare with
         '''
         return self.val > other.val
-    
+
     @compFunc
     def __le__(self, other):
         '''
@@ -66,7 +67,7 @@ class Hand(Enum):
         :param other: the other hand to compare with
         '''
         return self.val <= other.val
-    
+
     @compFunc
     def __lt__(self, other):
         '''
@@ -74,14 +75,14 @@ class Hand(Enum):
         :param other: the other hand to compare with
         '''
         return self.val < other.val
-    
+
     def __str__(self):
         '''
-        Nice representation for this object, 
+        Nice representation for this object,
         useful for showing in the app
         '''
         return self.name
-    
+
     @classmethod
     def getHand(cls, struct):
         '''
@@ -98,9 +99,9 @@ class Hand(Enum):
                     return hand
         else:
             for hand in cls:
-                #Lists are sorted
+                # Lists are sorted
                 # We compare element by element (only as much as the shortest list)
-                equalElements = [x==y for x,y in zip(struct, hand.struct)]
+                equalElements = [x == y for x, y in zip(struct, hand.struct)]
                 if False not in equalElements:
                     return hand
         return cls.NOTHING
