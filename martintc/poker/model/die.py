@@ -40,6 +40,8 @@ class Die(object):
             self.throw()
         else:
             self.val = None
+            # It doesn't make sense to hide a None value
+            self.hidden = False
 
     def throw(self):
         '''
@@ -150,14 +152,14 @@ class Die(object):
         Unambiguous string representation for this object,
         useful for logging or debugging purposes
         '''
-        return '{0!s}{1}'.format(self.val, '?' if self.hidden else '')
+        return '{0!s}{1}'.format(self.val or '_', '?' if self.hidden else '')
 
     def __str__(self, *args, **kwargs):
         '''
         Nice representation for this object,
         useful for showing in the app
         '''
-        return (self.getLetter() if self.val else '_') + ('?' if self.hidden else '')
+        return (self.getLetter() if self.val and not self.hidden else '?')
 
 if __name__ == "__main__":
     print(Die())

@@ -122,7 +122,6 @@ class DiceSet(object):
         for case in allCases:
             cases += 1
             if case > self:
-                print(case)
                 favorableCases += 1
 
         return Fraction(favorableCases, cases)
@@ -135,6 +134,14 @@ class DiceSet(object):
             die.test()
 
     # OPERATOR FUNCTIONS
+    def __contains__(self, dieObj):
+        '''
+        Check if dieObj is contained in this diceset
+        :param dieObj: the die to check
+        '''
+        if isinstance(dieObj, Die):
+            return dieObj in self.dice
+
     def __add__(self, other):
         '''
         Returns a new diceset as the addition between dicesets, which would be:
@@ -151,15 +158,21 @@ class DiceSet(object):
         '''
         Returns a new diceset with these dice and with the dice in other removed
 
-        [1,1,3,3,4] - [1,3,4] == [1,3,4]
+        [1,1,3,3,4] - [1,3,4] == [1,3]
 
         :param other: the other diceset
         '''
         _dice = deepcopy(self.dice)
-        for die in other.diceset:
-            _dice.remove(die)
-        ds = DiceSet(_dice)
-        return ds
+        _other = deepcopy(other)
+
+        if isinstance(_other, Die):
+            _other = DiceSet([_other])
+
+        if isinstance(_other, DiceSet):
+            [_dice.remove(die) for die in _other.dice if die in _dice]
+
+            dset = DiceSet(_dice)
+            return dset
 
     def __truediv__(self, other):
         '''
@@ -281,17 +294,17 @@ class DiceSet(object):
         Unambiguous string representation for this object,
         useful for logging or debugging purposes
         '''
-        return '[{}]'.format(','.join([str(die) for die in self.dice]))
+        freqs = {}
+        for k, v in self.frequencies(letter=True).items():
+            freqs[k] = v
+        return '[{}] {}'.format(','.join([repr(die) for die in self.dice]), freqs)
 
     def __str__(self, *args, **kwargs):
         '''
         Nice representation for this object, useful for
         showing in the app
         '''
-        freqs = {}
-        for k, v in self.frequencies(letter=True).items():
-            freqs[k] = v
-        return '{} {}'.format(self.hand().name, freqs)
+        return '{} [{}]'.format(self.hand().name, ','.join([str(die) for die in self.dice]))
 
 if __name__ == "__main__":
     # Constructor testing
