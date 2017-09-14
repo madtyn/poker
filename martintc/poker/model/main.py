@@ -27,5 +27,6 @@ def main():
     print('Player does not give up {} says {!s}'.format(players[currentPlayer], dice.hand()))
     print()
 
+
 if __name__ == '__main__':
     main()
