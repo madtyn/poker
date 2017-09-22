@@ -1,5 +1,5 @@
 import random
-from martintc.poker.model.utils import Utils, compFunc
+from martintc.poker.model.utils import compFunc, reverseDict
 from martintc.poker.model.errors import NotAllowedError
 
 '''
@@ -18,7 +18,7 @@ class Die(object):
     LETTERS = {1: 'N', 2: 'R', 3: 'J', 4: 'Q', 5: 'K', 6: 'A'}
 
     # The inverse dict, for reverse conversion (letter to number)
-    NUMBERS = Utils.reverseDict(LETTERS)
+    NUMBERS = reverseDict(LETTERS)
 
     # FACES = [1,2,3,4,5,6]
     FACES = sorted(LETTERS.keys())
@@ -70,6 +70,7 @@ class Die(object):
     def getLetter(self):
         '''
         Converts the numeric value received as parameter to the letter in the die
+        :returns the numeric value for this die's value or 'E' if it has no value
         '''
         return Die.LETTERS.get(self.val, 'E')
 
@@ -170,7 +171,11 @@ if __name__ == "__main__":
     print(Die(4, hide=False))
     print(Die(5, False))
     print(Die(6, False, hide=False))
+    print(Die(6, False, False))
     dice = [Die() for _ in range(5)]
     print('dice = {0!r}'.format([str(d) for d in dice]))
+    print('dice = {0!r}'.format([repr(d) for d in dice]))
     dice.sort()
     print('sorted dice = {0!r}'.format([str(d) for d in dice]))
+    print('sorted dice = {0!r}'.format([repr(d) for d in dice]))
+    print('lying dice = {0!r}'.format([repr(d.lie()) for d in dice]))
