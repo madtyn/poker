@@ -6,9 +6,34 @@ Created on 26 feb. 2017
 import random
 import sys
 
-from gettext import install, translation, gettext
+
 
 from martintc.poker.model.diceset import DiceSet
+
+from gettext import translation
+
+OPTS = [
+        {'code':'0',  'desc':'(ó_ò)'},
+        {'code':'en', 'desc':'English'},
+        {'code':'es', 'desc':'Español'}
+        ]
+
+for idx, option in enumerate(OPTS):
+    print('{} {}'.format(idx, option['desc']))
+
+idxSelected = None
+while not isinstance(idxSelected, int) or not (0 < idxSelected < len(OPTS)) :
+    try:
+        idxSelected = int(input('=> : '))
+    except ValueError:
+        pass
+
+if not idxSelected:
+    sys.exit(0)
+
+locale = OPTS[idxSelected]['code']
+lang = translation('poker', '/home/madtyn/PycharmProjects/poker/resources/locale', languages=[locale])
+lang.install()
 
 
 def main():
@@ -18,8 +43,8 @@ def main():
     MINIMUM = DiceSet([1, 2, 3, 4, 5])
 
     NUM_PLAYERS = 3
-    print('Liar poker game')
-    print('Initializing players')
+    print(_('Liar poker game'))
+    print(_('Initializing players'))
     players = ['p{}'.format(x + 1) for x in range(NUM_PLAYERS)]
 
     currentPlayer = 0
@@ -27,7 +52,7 @@ def main():
     # Only when initial round
     minimum = MINIMUM
     realDice = DiceSet()
-    print('Player {} has initially thrown {!r}'.format(players[currentPlayer], realDice))
+    print(_('Player {} has initially thrown {!r}').format(players[currentPlayer], realDice))
     # Only when initial round
 
 
@@ -37,9 +62,9 @@ def main():
     if impossibleWithRealDice or impossibleWithRealDice:
         surrender(players[currentPlayer])
 
-    print('Player {} hides/shows some dice'.format(players[currentPlayer]))
+    print(_('Player {} hides/shows some dice').format(players[currentPlayer]))
     showDice(realDice)
-    print('Players can see now {0!s} of {0!r}'.format(realDice))
+    print(_('Players can see now {0!s} of {0!r}').format(realDice))
 
     diceToTell = realDice
     falseDice = realDice.lie() # This should be higher than realDice
@@ -49,8 +74,8 @@ def main():
         diceToTell = falseDice.lie()
     diceToTell.show()
 
-    print('Player {} does not give up and says {!s}'.format(players[currentPlayer], diceToTell))
-    input('Press key to continue')
+    print(_('Player {} does not give up and says {!s}').format(players[currentPlayer], diceToTell))
+    input(_('Press key to continue'))
 
     # Now action is given to next player
     # Changing mechanism
@@ -60,22 +85,22 @@ def main():
     # Player vs player mechanism
     accepted = accepts()
     if accepted:
-        print('Player {} accepts'.format(players[currentPlayer]))
+        print(_('Player {} accepts').format(players[currentPlayer]))
         minimum = diceToTell
     else:
-        print('Player {} rejects!'.format(players[currentPlayer]))
+        print(_('Player {} rejects!').format(players[currentPlayer]))
         if realDice < diceToTell  or realDice < minimum:
             loser = currentPlayer
         else:
             loser = previousPlayer
-        print('Player {} loses one life'.format(players[loser]))
+        print(_('Player {} loses one life').format(players[loser]))
         loserStillAlive = True
         if loserStillAlive:
             currentPlayer = loser
 
         # We make all start again for whoever the currentPlayer is
 
-    print('We start another round again')
+    print(_('We start another round again'))
 
 
 def accepts():
@@ -85,7 +110,7 @@ def accepts():
 
 
 def surrender(player):
-    print('Player {} surrenders!'.format(player))
+    print(_('Player {} surrenders!').format(player))
     sys.exit(0)
 
 

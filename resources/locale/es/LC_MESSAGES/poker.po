@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-09-24 18:51+0200\n"
+"PO-Revision-Date: 2017-09-25 00:26+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 2.0.1\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es\n"
+
+#: main.py:26
+msgid "Liar poker game"
+msgstr "Juego de poker mentiroso"
+
+#: main.py:27
+msgid "Initializing players"
+msgstr "Inicializando jugadores"
+
+#: main.py:35
+msgid "Player {} has initially thrown {!r}"
+msgstr "El jugador {} ha tirado inicialmente {!r}"
+
+#: main.py:45
+msgid "Player {} hides/shows some dice"
+msgstr "El jugador {} muestra/oculta algunos dados"
+
+#: main.py:47
+msgid "Players can see now {0!s} of {0!r}"
+msgstr "Los jugadores pueden ver ahora  {0!s} de {0!r}"
+
+#: main.py:57
+msgid "Player {} does not give up and says {!s}"
+msgstr "El jugador {} no se rinde y dice {!s}"
+
+#: main.py:58
+msgid "Press key to continue"
+msgstr "Pulse una tecla para continuar"
+
+#: main.py:68
+msgid "Player {} accepts"
+msgstr "El jugador {} acepta"
+
+#: main.py:71
+msgid "Player {} rejects!"
+msgstr "El jugador {} rechaza!"
+
+#: main.py:76
+msgid "Player {} loses one life"
+msgstr "El jugador {} pierde una vida"
+
+#: main.py:83
+msgid "We start another round again"
+msgstr "Se comienza otra ronda"
+
+#: main.py:93
+msgid "Player {} surrenders!"
+msgstr "El jugador {} se rinde!"
