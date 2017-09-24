@@ -29,7 +29,7 @@ class Die(object):
 
         :param throw: if True, it assigns a random value to this Die
         :param hide: if True, it hides this die and sets its hidden status to True
-        :param value:
+        :param value: the internal value
         '''
         self.numUses = numUses
         self.hidden = hide
@@ -54,10 +54,10 @@ class Die(object):
         raise NotAllowedError('El dado {} ha agotado sus tiradas'.format(self))
 
     def lie(self):
-        '''
-        TODO
-        Devuelve un nuevo dado con igual o superior valor al ya existente
-        '''
+        """
+        Returns a new Die with value equal or higher than this one
+        :return: a new instance of Die
+        """
         return Die(value=random.choice([x for x in Die.FACES if x >= self.val]), hide=True, numUses=0)
 
     def restore(self, numUses=1):
@@ -161,6 +161,7 @@ class Die(object):
         useful for showing in the app
         '''
         return (self.getLetter() if self.val and not self.hidden else '?')
+
 
 if __name__ == "__main__":
     print(Die())

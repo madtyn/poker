@@ -10,7 +10,7 @@ from collections import Counter
 from operator import itemgetter
 
 from martintc.poker.model.die import Die
-from martintc.poker.model.pokerhand import Hand
+from martintc.poker.model.hand import Hand
 from martintc.poker.model.utils import compFunc
 
 
@@ -36,48 +36,10 @@ class DiceSet(object):
             self.dice = []
         self.dice.sort()
 
-    def __iter__(self):
-        '''
-        Returns itself as an iterator
-        '''
-        self.index = -1
-        return self
-
-    def __next__(self):
-        '''
-        Returns next die in the iteration or stops
-        '''
-        self.index += 1
-        if self.index >= len(self.dice):
-            self.index = -1
-            raise StopIteration
-        return self.dice[self.index]
-
-    def sort(self):
-        '''
-        Sorts the dice from left to right, minor values to max ones
-        '''
-        self.dice.sort()
-
-    def hand(self):
-        '''
-        Returns the poker hand from these dice
-        '''
-        numberEqualFaces = sorted(list(self.frequencies().values()), reverse=True)
-        return Hand.getHand(numberEqualFaces)
-
-    def frequencies(self, letter=False):
-        '''
-        Gets a dict counting the faces and the number of faces in these dice.
-
-        :param letter: if True, it returns the letters/faces, if not numbers are returned
-        '''
-        return Counter([d.getLetter() if letter else d.val for d in self.dice])
-
     def lie(self, fear=0.75, needToLie=True):
+        #TODO list
         '''
-        TODO
-        Devuelve una nueva jugada estrictamente superior, pero el objetivo es que mienta con una probabilidad creible
+        -Devuelve una nueva jugada estrictamente superior, pero el objetivo es que mienta con una probabilidad creible
         y que sea ajustable segun la dificultad
         Hay que tener en cuenta que puede cambiar según los dados tirados, solo habría que mentir sobre los dados tirados Y ocultos
         Tambien hay que tener en cuenta que la posibilidad de superar podria ser unica
@@ -126,6 +88,67 @@ class DiceSet(object):
 
         return Fraction(favorableCases, cases)
 
+    def hand(self):
+        '''
+        Returns the poker hand from these dice
+        '''
+        numberEqualFaces = sorted(list(self.frequencies().values()), reverse=True)
+        return Hand.getHand(numberEqualFaces)
+
+    def frequencies(self, letter=False):
+        '''
+        Gets a dict counting the faces and the number of faces in these dice.
+
+        :param letter: if True, it returns the letters/faces, if not numbers are returned
+        '''
+        return Counter([d.getLetter() if letter else d.val for d in self.dice])
+
+    def availableDice(self):
+        return DiceSet([deepcopy(d) for d in self.dice if d.numUses > 0])
+
+    def notAvailableDice(self):
+        return DiceSet([deepcopy(d) for d in self.dice if d.numUses == 0])
+
+    def visibleDice(self):
+        return DiceSet([deepcopy(d) for d in self.dice if not d.hidden])
+
+    def hiddenDice(self):
+        return DiceSet([deepcopy(d) for d in self.dice if not d.hidden])
+
+    def sort(self):
+        '''
+        Sorts the dice from left to right, minor values to max ones
+        '''
+        self.dice.sort()
+
+    def show(self):
+        '''
+        Shows the dice
+        '''
+        for die in self.dice:
+            die.show()
+
+    def hide(self):
+        '''
+        Hides the dice
+        '''
+        for die in self.dice:
+            die.hide()
+
+    def restore(self):
+        '''
+        Restores the numbers of uses of these dice
+        '''
+        for die in self.dice:
+            die.restore()
+
+    def reset(self):
+        '''
+        Resets the dice to None
+        '''
+        for die in self.dice:
+            die.reset()
+
     def test(self):
         '''
         Tests the dice
@@ -133,10 +156,30 @@ class DiceSet(object):
         for die in self.dice:
             die.test()
 
+    # PRIVATE API FUNCTIONS
+
+    def __iter__(self):
+        '''
+        Returns itself as an iterator
+        '''
+        self.index = -1
+        return self
+
+    def __next__(self):
+        '''
+        Returns next die in the iteration or stops
+        '''
+        self.index += 1
+        if self.index >= len(self.dice):
+            self.index = -1
+            raise StopIteration
+        return self.dice[self.index]
+
     # OPERATOR FUNCTIONS
     def __contains__(self, dieObj):
         '''
-        Check if dieObj is contained in this diceset
+        Check if dieObj is contained in this diceset. Used by 'in' operator
+
         :param dieObj: the die to check
         '''
         if isinstance(dieObj, Die):
@@ -285,7 +328,7 @@ class DiceSet(object):
 
     def __len__(self):
         '''
-        Returns the name of dice of this combination
+        Returns the length of dice in this combination
         '''
         return len(self.dice)
 
@@ -301,7 +344,7 @@ class DiceSet(object):
 
     def __str__(self, *args, **kwargs):
         '''
-        Nice representation for this object, useful for
+        Nice readable representation for this object, useful for
         showing in the app
         '''
         return '{} [{}]'.format(self.hand().name, ','.join([str(die) for die in self.dice]))
