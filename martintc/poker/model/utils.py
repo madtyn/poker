@@ -35,7 +35,7 @@ def reverseDict(dic):
     Returns a reversed dict switching keys with values.
     Example:
         reverseDict({k1:v1, k2:v2,...}) == {v1:k1, v2:k2, ...}
-    :param dic: thedict to reverse
+    :param dic: the dict to reverse
     '''
     return dict([(v, k) for (k, v) in dic.items()])
 
@@ -67,7 +67,7 @@ def C(n, k=1):
     '''
     Statistical combinations 'nCk'
     :param n: number of elements to be combined
-    :param r: number of elements to be taken for each combination
+    :param k: number of elements to be taken for each combination
     :return: the 'n choose k' mathematical result
     '''
     '''
@@ -85,13 +85,11 @@ def C(n, k=1):
         New formula: f'(n,k) / fact(k)
         
         '''
-    fnkProduct = reduce(mul, range(n, n - k, -1))
-    return fnkProduct / fact(k)
-
-
+    k = n - k if k > (n // 2) else k
+    fnkProduct = reduce(mul, range(n, n - k, -1), 1)
+    return fnkProduct // fact(k)
 
 if __name__ == "__main__":
-    print(fact(6))
+    print('C(997, 4) = {}'.format(C(997, 4)))
     print('C(8,4) == 70? => {}'.format(C(8, 4)))  # Should be 70
     print('C(50000,4) is {}'.format(C(50000, 4))) # No precission
-    print('C(997, 4) = {}'.format(C(997, 4)))
