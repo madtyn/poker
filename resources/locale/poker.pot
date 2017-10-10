@@ -40,7 +40,7 @@ msgid "Player {} does not give up and says {!s}"
 msgstr ""
 
 #: main.py:58
-msgid "Press key to continue"
+msgid "Press Enter to continue or type 0 to leave: "
 msgstr ""
 
 #: main.py:68
