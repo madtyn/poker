@@ -1,13 +1,6 @@
-import os
-
 import tkinter as tk
 import tkinter.ttk as ttk
-from random import randint, random
 
-from widgets import ImgButton
-
-
-from martintc.poker.model.die import Die
 from martintc.poker.view.widgets import DieButton
 
 """
@@ -24,6 +17,9 @@ class Statusbar(tk.Frame):
 
 
 class DiceFrame(ttk.Frame):
+    """
+    Frame containing the dice to show
+    """
     def __init__(self, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         dice_buttons = []
@@ -37,21 +33,33 @@ class DiceFrame(ttk.Frame):
                             borderwidth=6,
                             )
 
-            button = DieButton(master, style=current_style)
-            button.pack(side=tk.LEFT)
+            button = DieButton(self, style=current_style)
+            button.grid(row=0, column=i, padx=5, pady=5)
+            # button.pack(side=tk.LEFT)
             dice_buttons.append(button)
 
 
 class ButtonBar(ttk.Frame):
+    """
+    Frame containing the main buttons and controls for playing
+    """
     def __init__(self, master=None, *args, **kwargs):
         super().__init__(master, **kwargs)
 
 
 class App(ttk.Frame):
+    """
+    Frame containing the whole window app, the menu, and the subframes
+    """
     def __init__(self, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
-        self. main = DiceFrame(self)
+        self.main = DiceFrame(self)
         self.buttonBar = ButtonBar(self)
+        self.textarea = tk.Text(self)
+
+        self.main.pack()
+        self.buttonBar.pack()
+        self.textarea.pack()
         """
         self.parent = parent # Only if needed
         self.statusbar = Statusbar(self, ...)
@@ -68,5 +76,7 @@ class App(ttk.Frame):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    DiceFrame(root).pack(side="top", fill="both", expand=True)
+    App(root).pack(side="top", fill="both", expand=True)
+    root.update()
+    root.minsize(root.winfo_width(), root.winfo_height())
     root.mainloop()
