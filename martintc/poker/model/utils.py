@@ -31,16 +31,17 @@ def compFunc(wrapped, instance, args, kwargs):
 
 
 def reverseDict(dic):
-    '''
+    """
     Returns a reversed dict switching keys with values.
     Example:
         reverseDict({k1:v1, k2:v2,...}) == {v1:k1, v2:k2, ...}
     :param dic: the dict to reverse
-    '''
+    """
     return dict([(v, k) for (k, v) in dic.items()])
 
+
 def prob(numberEqualDice, numberDiceToThrow, numValidFaces):
-    '''
+    """
     # C(ndadosatirar, n? dadosnecesitados)* (1/6)^(n? de dados necesitados)
     # * (n caras validas)
     # C(nDadosaTirar, n dadosnecesitados)*
@@ -51,7 +52,7 @@ def prob(numberEqualDice, numberDiceToThrow, numValidFaces):
     :param numberEqualDice:
     :param numberDiceToThrow:
     :param numValidFaces:
-    '''
+    """
     # TODO martintc Revisar especificamente todo el asunto matematico
     # With fraction use float(f) for a percentage
     f1_6 = Fraction(1, 6)
@@ -63,13 +64,14 @@ def prob(numberEqualDice, numberDiceToThrow, numValidFaces):
         + (f1_6 ** numberEqualDice)
     )
 
+
 def C(n, k=1):
-    '''
+    """
     Statistical combinations 'nCk'
     :param n: number of elements to be combined
     :param k: number of elements to be taken for each combination
     :return: the 'n choose k' mathematical result
-    '''
+    """
     '''
         Original formula: fact(n) / (fact(k) * fact(n-k))
         
@@ -88,6 +90,7 @@ def C(n, k=1):
     k = n - k if k > (n // 2) else k
     fnkProduct = reduce(mul, range(n, n - k, -1), 1)
     return fnkProduct // fact(k)
+
 
 if __name__ == "__main__":
     print('C(997, 4) = {}'.format(C(997, 4)))
