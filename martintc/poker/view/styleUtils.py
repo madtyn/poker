@@ -6,9 +6,14 @@ style = None
 
 
 def random_color():
+    """
+    Returns a random color as a string
+    :return: a color
+    """
     def r():
         return rnd.randint(0, 0xffff)
     return '#{:04x}{:04x}{:04x}'.format(r(), r(), r())
+
 
 def get_style(master=None):
     """
@@ -29,7 +34,7 @@ def get_style_name(widget):
     :param widget: the widget
     :return: the name of the style
     """
-    # config('style') returns
+    # .config('style') call returns the tuple
     # ( option name, dbName, dbClass, default value, current value)
     return widget.config('style')[-1]
 

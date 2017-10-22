@@ -1,5 +1,6 @@
 from tkinter import messagebox
 
+
 class TextUi(object):
     def output(self, message):
         print(message)
