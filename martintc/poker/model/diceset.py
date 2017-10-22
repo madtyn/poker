@@ -21,7 +21,9 @@ class DiceSet(object):
     for the whole move.
     """
 
-    def __init__(self, input_list=None, throw=True, length=5):
+    DEFAULT_LENGTH = 5
+
+    def __init__(self, input_list=None, throw=True, length=DEFAULT_LENGTH):
         """
         Constructor
         :param input_list: if provided, the list of numeric values for this diceset
