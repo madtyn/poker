@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-25 01:16+0200\n"
-"PO-Revision-Date: 2017-09-25 01:17+0200\n"
+"POT-Creation-Date: 2017-10-13 13:47+0200\n"
+"PO-Revision-Date: 2017-10-13 13:49+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -17,53 +17,57 @@ msgstr ""
 "X-Generator: Poedit 2.0.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: main.py:26
+#: poker/controller/main.py:37
 msgid "Liar poker game"
 msgstr "Juego de poker mentiroso"
 
-#: main.py:27
-msgid "Initializing players"
+#: poker/controller/main.py:38
+msgid "Initializing __players"
 msgstr "Inicializando jugadores"
 
-#: main.py:35
-msgid "Player {} has initially thrown {!r}"
-msgstr "El jugador {} ha tirado inicialmente {!r}"
-
-#: main.py:45
-msgid "Player {} hides/shows some dice"
-msgstr "El jugador {} muestra/oculta algunos dados"
-
-#: main.py:47
-msgid "Players can see now {0!s} of {0!r}"
-msgstr "Los jugadores pueden ver ahora  {0!s} de {0!r}"
-
-#: main.py:57
-msgid "Player {} does not give up and says {!s}"
-msgstr "El jugador {} no se rinde y dice {!s}"
-
-#: main.py:58
-msgid "Press Enter to continue or type 0 to leave: "
-msgstr "Presione INTRO para continuar o introduzca 0 para salir: "
-
-#: main.py:68
-msgid "Player {} accepts"
-msgstr "El jugador {} acepta"
-
-#: main.py:71
-msgid "Player {} rejects!"
-msgstr "El jugador {} rechaza!"
-
-#: main.py:76
-msgid "Player {} loses one life"
-msgstr "El jugador {} pierde una vida"
-
-#: main.py:83
+#: poker/controller/main.py:46
 msgid "We start another round again"
 msgstr "Se comienza otra ronda"
 
-#: main.py:93
-msgid "Player {} surrenders!"
-msgstr "El jugador {} se rinde!"
+#: poker/controller/main.py:51
+msgid "Player {0.name} has initially thrown {1!r}"
+msgstr "El jugador {0.name} ha tirado inicialmente {1!r}"
+
+#: poker/controller/main.py:61
+#, python-brace-format
+msgid "Player {0.name} accepts"
+msgstr "El jugador {0.name} acepta"
+
+#: poker/controller/main.py:64
+#, python-brace-format
+msgid "Player {0.name} rejects!"
+msgstr "El jugador {0.name} rechaza!"
+
+#: poker/controller/main.py:71
+msgid "Player {} loses one life"
+msgstr "El jugador {} pierde una vida"
+
+#: poker/controller/main.py:83
+#, python-brace-format
+msgid "Player {0.name} hides/shows some dice"
+msgstr "El jugador {0.name} muestra/oculta algunos dados"
+
+#: poker/controller/main.py:85
+msgid "Players can see now {0!s} of {0!r}"
+msgstr "Los jugadores pueden ver ahora  {0!s} de {0!r}"
+
+#: poker/controller/main.py:95
+msgid "Player {.name} does not give up and says {!s}"
+msgstr "El jugador {.name} no se rinde y dice {!s}"
+
+#: poker/controller/main.py:96
+msgid "Press Enter to continue or type 0 to leave: "
+msgstr "Presione INTRO para continuar o introduzca 0 para salir: "
+
+#: poker/controller/main.py:108
+#, python-brace-format
+msgid "Player {0.name} surrenders!"
+msgstr "El jugador {0.name} se rinde!"
 
 #~ msgid "Press key to continue"
 #~ msgstr "Pulse una tecla para continuar"
