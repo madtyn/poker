@@ -12,12 +12,14 @@ for idx, option in enumerate(OPTS):
     output('{} {}'.format(idx, option['desc']))
 
 
-def selectLanguage():
+def selectLanguage(default_lang=None):
     """
     Handles the selection by the user of the language
     :return: the selected language
     """
     idx_selected = None  # TODO Antes era None. Lenguaje por defecto por comodidad
+    if default_lang:
+        idx_selected = default_lang
     while not isinstance(idx_selected, int) or not (0 <= idx_selected < len(OPTS)):
         try:
             idx_selected = int(input('=> : '))
