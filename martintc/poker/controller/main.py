@@ -1,8 +1,8 @@
-'''
+"""
 Created on 26 feb. 2017
 
 @author: madtyn
-'''
+"""
 # TODO - Every I/O should be through an object/class which will be replace by a GUI
 # TODO - Every player could be remote or local, as well as human or machine,
 # TODO     a proxy player could be an adapter to both
@@ -10,121 +10,127 @@ Created on 26 feb. 2017
 import random
 import sys
 
+from martintc.poker.model.die import Die
 from martintc.poker.model.diceset import DiceSet
+from martintc.poker.model.players import Robot, Player, Players
+from martintc.poker.model.status import Status
 from martintc.poker.view.languages import selectLanguage
 from martintc.poker.view.ui import output
 
 lang = selectLanguage()
 
 if lang:
-    lang.install()
+    lang.install()  # Makes _() available as builtin
 else:
     sys.exit(0)
 
+
 # noinspection PyUnresolvedReferences
 def main():
-    '''
+    """
     Main function
-    '''
-    MINIMUM = DiceSet([1, 2, 3, 4, 5])
+    """
+    ABSOLUTE_MINIMUM = DiceSet(Die.FACES[:DiceSet.DEFAULT_LENGTH])
 
+    player_names = ['Matt', 'Alice', 'Kevin', 'Natalie', 'John', 'Jennifer']
     NUM_PLAYERS = 3
     output(_('Liar poker game'))
     output(_('Initializing players'))
-    players = ['p{}'.format(x + 1) for x in range(NUM_PLAYERS)]
+    players = Players([Robot(x, lives=1) for x in player_names[:NUM_PLAYERS]])
+    status = Status(players)
 
-    currentPlayer = 0
     initial = True
-    keepOn = True
+    keep_on = True
+    dice_to_tell = None
 
-    while(keepOn):
-        output(_('We start another round again'))
-        # Only when initial round
+    while keep_on:
+
+        # Only when initial turn
         if initial:
-            minimum = MINIMUM
-            realDice = DiceSet()
-            output(_('Player {} has initially thrown {!r}').format(players[currentPlayer], realDice))
+            minimum = ABSOLUTE_MINIMUM
+            dice_to_tell = minimum
+            initial = False
         else:
             # Player vs player mechanism
             # Now action is given to next player
             # Changing mechanism
-            previousPlayer = currentPlayer
-            currentPlayer = (currentPlayer + 1) % len(players)
-            accepted = accepts()
-            if accepted:
-                initial = False
-                output(_('Player {} accepts').format(players[currentPlayer]))
-                minimum = diceToTell
-            else:
-                output(_('Player {} rejects!').format(players[currentPlayer]))
+            current_player = status.changePlayer()
+            rejected = not current_player.accepts()
 
-                initial = True
-                if realDice < diceToTell or realDice < minimum:
-                    loser = currentPlayer
+            initial = rejected
+
+            if rejected:
+                # We proceed to decide winner
+                output(_('Player {0.name} rejects!').format(status.current_player()))
+
+                # The current player has rejected so,
+                if real_dice < dice_to_tell:
+                    # If it's a lie, he wins. Previous player loses
+                    loser = status.prevPlayer()
                 else:
-                    loser = previousPlayer
-                output(_('Player {} loses one life').format(players[loser]))
-                loserStillAlive = True # TODO Will change depending on number of lifes
-                if loserStillAlive:
-                    currentPlayer = loser
+                    # It was real. Current player loses
+                    loser = status.current_player()
+                status.loses(loser)
+                if status.winner():
+                    output(_('And the winner is {.name}').format(status.winner()))
+                    sys.exit(0)
 
+            else:
+                # We initialize the next lying round
+                output(_('Player {0.name} accepts').format(status.current_player()))
+                minimum = dice_to_tell
+                minimum.show()
+                output(_('Minimum is {!r}').format(minimum))
 
-        impossibleWithRealDice = realDice.surpassProb() == 0
-        impossibleWithVisibleDice = realDice.surpassProb(len(realDice.available_dice())) == 0
+        output(_('We start another turn again'))
 
-        if impossibleWithRealDice or impossibleWithRealDice:
-            surrender(players[currentPlayer])
+        # We throw dice
+        real_dice = DiceSet()
+        output(_('Player {0.name} has thrown {1!r}').format(status.current_player(), real_dice))
 
-        output(_('Player {} hides/shows some dice').format(players[currentPlayer]))
-        showDice(realDice)
-        output(_('Players can see now {0!s} of {0!r}').format(realDice))
+        # TODO Player should estimate straight away if the current dice can be surpassed with these dice
+        # TODO Also, the player could use the advantage of hidden dice
+        # impossibleWithRealDice = real_dice.surpassProb() == 0
+        # impossibleWithVisibleDice = real_dice.surpassProb(len(real_dice.available_dice())) == 0
+        # if impossibleWithRealDice or impossibleWithRealDice:
+        #     status.surrenders(status.current_player())
 
-        diceToTell = realDice
-        falseDice = realDice.lie() # This should be higher than realDice
+        # TODO Show / hide
+        # output(_('Player {0.name} hides/shows some dice').format(status.current_player()))
+        # showDice(realDice)
+        output(_('Players can see now {0!s} of {0!r}').format(real_dice))
 
-        lying = decideToLie()
+        lying = status.current_player().decide_to_lie(minimum, real_dice)
         if lying:
-            diceToTell = falseDice.lie()
-        diceToTell.show()
+            dice_to_tell = real_dice.lie()  # This should be higher than real_dice
 
-        output(_('Player {} does not give up and says {!s}').format(players[currentPlayer], diceToTell))
-        keepOn = input(_('Press Enter to continue or type 0 to leave: '))
-        keepOn = (keepOn.strip() != '0')
-        # We make all start again for whoever the currentPlayer is
+        if dice_to_tell:
+            output(_('Player {.name} does not give up and says {!s}').format(status.current_player(), dice_to_tell))
+        else:
+            status.surrenders(status.current_player())
 
-
-def accepts():
-    # TODO In human players this asks for believing or not the play hand offered
-    # TODO in computer players
-    return random.choice([True, False])
-
-
-def surrender(player):
-    output(_('Player {} surrenders!').format(player))
-    sys.exit(0)
+        keep_on = input(_('Press Enter to continue or type 0 to leave: '))
+        keep_on = (keep_on.strip() != '0')
+        # We make all start again for whoever the current_player is
 
 
 def showDice(dice):
     # While there are more than 3 hidden dice
     MAX_HIDDEN_DICE = 3
-    while(len(dice.hidden_dice()) > MAX_HIDDEN_DICE):
+    attempts = 0
+    while len(dice.hidden_dice()) > MAX_HIDDEN_DICE:
         output('before {!r}'.format(dice))
         _ = [die.show() for die in dice if die.hidden and random.choice([True, False])]
         output('after {!r}'.format(dice))
-
-def decideToLie(actualDiceset=None):
-    """
-    Decides if the player's going to lie or not
-    :return: True if the player is going to lie, False if not
-    """
-    # TODO This decission should be complex, it should be different for machines and human players
-    # TODO In computer players, this should involve:
-    # 1.- Firstly and IMPORTANT, if it's possible to lie with the visible dice
-    # 2.- If the actual dice the player knows for sure are higher than needed, it should be PROBABLY false
-    # 3.- If the actual dice are not enough for overpassing, the harder it is to overpass, the more PROBABLY is the lie
-    # TODO In humans, this just should ask for confirmation to lie
-    return random.choice([True, False])
+        attempts += 1
+        if attempts >= 30:
+            # It has no sense hiding dice
+            break
 
 
 if __name__ == '__main__':
     main()
+
+
+def challenges(self, lier, believer):
+    pass
