@@ -38,7 +38,7 @@ class DiceSet(object):
             self.dice = []
         self.dice.sort()
 
-    def lie(self, fear=0.75, needToLie=True):
+    def lie(self, minimum=None, fear=0.75, needToLie=True):
         #TODO list
         """
         -Devuelve una nueva jugada estrictamente superior, pero el objetivo es que mienta con una probabilidad creible
@@ -51,14 +51,24 @@ class DiceSet(object):
         # Comparar la diferencia entre self.dice y la maxima puntuacion que se puede sacar tirando dados ocultos
 
         # Iniciamos el dado en el minimo posible para superarlo
-        dice = DiceSet([Die(min(Die.FACES)) if d.hidden else deepcopy(d) for d in self.dice])
+        # TODO Lie with only hidden dice (1)
+        # dice = DiceSet([Die(min(Die.FACES)) if d.hidden else deepcopy(d) for d in self.dice])
+        dice = DiceSet([Die(min(Die.FACES)) for __ in self.dice])
 
         # TODO - It might be the case when the dice can't be surpassed only throwing the hidden ones
         # TODO      Example [2?, 2, 2, 3, 6]
-        while dice <= self:  # or (probs - dice.surpassProb()) > fear:  # TODO
-            dice = DiceSet([d.lie() if d.hidden else deepcopy(d) for d in self.dice])
+        attempts = 0
+        while dice <= self and (not minimum or dice <= minimum):  # or (probs - dice.surpassProb()) > fear:  # TODO
+            # TODO Lie with only hidden dice (2)
+            # dice = DiceSet([d.lie() if d.hidden else deepcopy(d) for d in self.dice])
+            dice = DiceSet([d.lie() for d in self.dice])
             # Tipificar la jugada/mentira entre 0 y 1 para obtener un coeficiente de "credibilidad" (+ diferencia hacia arriba, + dificil)
             # Si es necesaria, mas dificil aun
+            attempts += 1
+            if attempts >= 30:
+                # It has no sense trying to lie
+                dice = None
+                break
         return dice
 
     def surpassProb(self, num_dice=None):
