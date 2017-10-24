@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-10-13 13:47+0200\n"
-"PO-Revision-Date: 2017-10-13 13:49+0200\n"
+"POT-Creation-Date: 2017-10-23 19:04+0200\n"
+"PO-Revision-Date: 2017-10-23 19:04+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -22,52 +22,62 @@ msgid "Liar poker game"
 msgstr "Juego de poker mentiroso"
 
 #: poker/controller/main.py:38
-msgid "Initializing __players"
+#, fuzzy
+#| msgid "Initializing __players"
+msgid "Initializing players"
 msgstr "Inicializando jugadores"
 
 #: poker/controller/main.py:46
-msgid "We start another round again"
-msgstr "Se comienza otra ronda"
+msgid "We start another turn again"
+msgstr "Se comienza otro turno"
 
-#: poker/controller/main.py:51
-msgid "Player {0.name} has initially thrown {1!r}"
-msgstr "El jugador {0.name} ha tirado inicialmente {1!r}"
-
-#: poker/controller/main.py:61
-#, python-brace-format
-msgid "Player {0.name} accepts"
-msgstr "El jugador {0.name} acepta"
-
-#: poker/controller/main.py:64
+#: poker/controller/main.py:63
 #, python-brace-format
 msgid "Player {0.name} rejects!"
 msgstr "El jugador {0.name} rechaza!"
 
-#: poker/controller/main.py:71
-msgid "Player {} loses one life"
-msgstr "El jugador {} pierde una vida"
-
-#: poker/controller/main.py:83
+#: poker/controller/main.py:73
 #, python-brace-format
-msgid "Player {0.name} hides/shows some dice"
-msgstr "El jugador {0.name} muestra/oculta algunos dados"
+msgid "Player {0.name} loses one life"
+msgstr "El jugador {0.name} pierde una vida"
 
-#: poker/controller/main.py:85
+#: poker/controller/main.py:79
+#, python-brace-format
+msgid "Player {0.name} accepts"
+msgstr "El jugador {0.name} acepta"
+
+#: poker/controller/main.py:82
+msgid "Minimum is {!r}"
+msgstr "El mínimo es {!r}"
+
+#: poker/controller/main.py:86
+msgid "Player {0.name} has thrown {1!r}"
+msgstr "El jugador {0.name} ha tirado {1!r}"
+
+#: poker/controller/main.py:97
 msgid "Players can see now {0!s} of {0!r}"
 msgstr "Los jugadores pueden ver ahora  {0!s} de {0!r}"
 
-#: poker/controller/main.py:95
+#: poker/controller/main.py:106
 msgid "Player {.name} does not give up and says {!s}"
 msgstr "El jugador {.name} no se rinde y dice {!s}"
 
-#: poker/controller/main.py:96
+#: poker/controller/main.py:112
 msgid "Press Enter to continue or type 0 to leave: "
 msgstr "Presione INTRO para continuar o introduzca 0 para salir: "
 
-#: poker/controller/main.py:108
+#: poker/model/players.py:181
 #, python-brace-format
 msgid "Player {0.name} surrenders!"
 msgstr "El jugador {0.name} se rinde!"
+
+#: poker/model/players.py:187
+#, python-brace-format
+msgid "Player {0.name} is out of the game!"
+msgstr "¡El jugador {0.name} queda fuera del juego!"
+
+#~ msgid "Player {0.name} hides/shows some dice"
+#~ msgstr "El jugador {0.name} muestra/oculta algunos dados"
 
 #~ msgid "Press key to continue"
 #~ msgstr "Pulse una tecla para continuar"

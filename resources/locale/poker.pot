@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-10-13 13:47+0200\n"
+"POT-Creation-Date: 2017-10-23 19:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,49 +23,54 @@ msgid "Liar poker game"
 msgstr ""
 
 #: poker/controller/main.py:38
-msgid "Initializing __players"
+msgid "Initializing players"
 msgstr ""
 
 #: poker/controller/main.py:46
-msgid "We start another round again"
+msgid "We start another turn again"
 msgstr ""
 
-#: poker/controller/main.py:51
-msgid "Player {0.name} has initially thrown {1!r}"
-msgstr ""
-
-#: poker/controller/main.py:61
-#, python-brace-format
-msgid "Player {0.name} accepts"
-msgstr ""
-
-#: poker/controller/main.py:64
+#: poker/controller/main.py:63
 #, python-brace-format
 msgid "Player {0.name} rejects!"
 msgstr ""
 
-#: poker/controller/main.py:71
-msgid "Player {} loses one life"
-msgstr ""
-
-#: poker/controller/main.py:83
+#: poker/controller/main.py:73
 #, python-brace-format
-msgid "Player {0.name} hides/shows some dice"
+msgid "Player {0.name} loses one life"
 msgstr ""
 
-#: poker/controller/main.py:85
+#: poker/controller/main.py:79
+#, python-brace-format
+msgid "Player {0.name} accepts"
+msgstr ""
+
+#: poker/controller/main.py:82
+msgid "Minimum is {!r}"
+msgstr ""
+
+#: poker/controller/main.py:86
+msgid "Player {0.name} has thrown {1!r}"
+msgstr ""
+
+#: poker/controller/main.py:97
 msgid "Players can see now {0!s} of {0!r}"
 msgstr ""
 
-#: poker/controller/main.py:95
+#: poker/controller/main.py:106
 msgid "Player {.name} does not give up and says {!s}"
 msgstr ""
 
-#: poker/controller/main.py:96
+#: poker/controller/main.py:112
 msgid "Press Enter to continue or type 0 to leave: "
 msgstr ""
 
-#: poker/controller/main.py:108
+#: poker/model/players.py:181
 #, python-brace-format
 msgid "Player {0.name} surrenders!"
+msgstr ""
+
+#: poker/model/players.py:187
+#, python-brace-format
+msgid "Player {0.name} is out of the game!"
 msgstr ""
