@@ -53,23 +53,23 @@ class DiceSet(object):
         # Iniciamos el dado en el minimo posible para superarlo
         # TODO Lie with only hidden dice (1)
         # dice = DiceSet([Die(min(Die.FACES)) if d.hidden else deepcopy(d) for d in self.dice])
-        dice = DiceSet([Die(min(Die.FACES)) for __ in self.dice])
+        lie_result = DiceSet.ABSOLUTE_MINIMUM
 
         # TODO - It might be the case when the dice can't be surpassed only throwing the hidden ones
         # TODO      Example [2?, 2, 2, 3, 6]
         attempts = 0
-        while dice <= self and (not minimum or dice <= minimum):  # or (probs - dice.surpassProb()) > fear:  # TODO
+        while lie_result <= self and (not minimum or lie_result <= minimum):  # or (probs - dice.surpassProb()) > fear:  # TODO
             # TODO Lie with only hidden dice (2)
             # dice = DiceSet([d.lie() if d.hidden else deepcopy(d) for d in self.dice])
-            dice = DiceSet([d.lie() for d in self.dice])
+            lie_result = DiceSet([d.lie() for d in self.dice])
             # Tipificar la jugada/mentira entre 0 y 1 para obtener un coeficiente de "credibilidad" (+ diferencia hacia arriba, + dificil)
             # Si es necesaria, mas dificil aun
             attempts += 1
             if attempts >= 30:
                 # It has no sense trying to lie
-                dice = None
+                lie_result = None
                 break
-        return dice
+        return lie_result
 
     def surpassProb(self, num_dice=None):
         """
@@ -118,17 +118,45 @@ class DiceSet(object):
         """
         return Counter([d.getLetter() if letter else d.val for d in self.dice])
 
-    def available_dice(self):
-        return DiceSet([deepcopy(d) for d in self.dice if d.numUses > 0])
+    def available_dice(self, get_length=False):
+        """
+        Returns a new diceset with the dice still available for throwing
+        :return: a diceset
+        """
+        if get_length:
+            return sum([1 for d in self.dice if d.numUses > 0])
+        else:
+            return DiceSet([deepcopy(d) for d in self.dice if d.numUses > 0])
 
-    def not_available_dice(self):
-        return DiceSet([deepcopy(d) for d in self.dice if d.numUses == 0])
+    def not_available_dice(self, get_length=False):
+        """
+        Returns a new diceset with the dice not available for throwing
+        :return: a diceset
+        """
+        if get_length:
+            return sum([1 for d in self.dice if d.numUses == 0])
+        else:
+            return DiceSet([deepcopy(d) for d in self.dice if d.numUses == 0])
 
-    def visible_dice(self):
-        return DiceSet([deepcopy(d) for d in self.dice if not d.hidden])
+    def visible_dice(self, get_length=False):
+        """
+        Returns a new diceset with the dice which are visible for everyone
+        :return: a diceset
+        """
+        if get_length:
+            return sum([1 for d in self.dice if not d.hidden])
+        else:
+            return DiceSet([deepcopy(d) for d in self.dice if not d.hidden])
 
-    def hidden_dice(self):
-        return DiceSet([deepcopy(d) for d in self.dice if d.hidden])
+    def hidden_dice(self, get_length=False):
+        """
+        Returns a new diceset with the dice which are hidden for everyone
+        :return: a diceset
+        """
+        if get_length:
+            return sum([1 for d in self.dice if d.hidden])
+        else:
+            return DiceSet([deepcopy(d) for d in self.dice if d.hidden])
 
     def sort(self):
         """
@@ -172,6 +200,8 @@ class DiceSet(object):
             die.test()
 
     # PRIVATE API FUNCTIONS
+
+    # CONTAINER AND ITERATOR FUNCTIONS
 
     def __iter__(self):
         """
@@ -363,6 +393,10 @@ class DiceSet(object):
         showing in the app
         """
         return '{} [{}]'.format(self.hand().name, ','.join([str(die) for die in self.dice]))
+
+
+DiceSet.ABSOLUTE_MINIMUM = DiceSet(Die.FACES[:DiceSet.DEFAULT_LENGTH])
+DiceSet.ABSOLUTE_MAXIMUM = DiceSet([Die.NUMBERS['A']]*DiceSet.DEFAULT_LENGTH)
 
 
 if __name__ == "__main__":
