@@ -118,6 +118,22 @@ class DiceSet(object):
         """
         return Counter([d.getLetter() if letter else d.val for d in self.dice])
 
+    #TODO Cambiar el dado mas bajo por el siguiente mas alto, solo si coincide con otra cara repetida o suelta, intentamos acudir a otro suelto
+    def superior(self):
+        """
+        Returns the diceset inmediately superior to this one
+        """
+        pass
+
+    #TODO Change die with lowest freq and face values for the inmediate next low value
+    #TODO BUT NOT IF the new would increment another freq in diceset
+    #TODO If this last thing happens, we try the next value, and if the die runs out of chances, we try the second lowest
+    def inferior(self):
+        """
+        Returns the diceset inmediately superior to this one
+        """
+        pass
+
     def available_dice(self, get_length=False):
         """
         Returns a new diceset with the dice still available for throwing
@@ -192,6 +208,9 @@ class DiceSet(object):
         for die in self.dice:
             die.reset()
 
+    def numUses(self):
+        return sum([d.numUses for d in self.dice])
+
     def test(self):
         """
         Tests the dice
@@ -202,6 +221,9 @@ class DiceSet(object):
     # PRIVATE API FUNCTIONS
 
     # CONTAINER AND ITERATOR FUNCTIONS
+
+    def __getitem__(self, item):
+        return self.dice[item]
 
     def __iter__(self):
         """

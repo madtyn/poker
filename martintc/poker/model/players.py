@@ -66,11 +66,6 @@ class Player(Loggable):
         :return: True if the player is going to lie, False if not
         """
         # TODO This decision should be complex, it should be different for machines and human players
-        # TODO In computer players, this should involve:
-        # 1.- Firstly and IMPORTANT, if it's possible to lie with the visible dice
-        # 2.- If the actual dice the player knows for sure are higher than needed, it should be PROBABLY false
-        # 3.- If the actual dice are not enough for overpassing, the harder it is to overpass, the more PROBABLY is the lie
-        # TODO In humans, this just should ask for confirmation to lie
         raise NotImplementedError
 
     def __eq__(self, o: object) -> bool:
@@ -83,7 +78,7 @@ class Player(Loggable):
 
 class Robot(Player):
     def accepts(self) -> bool:
-        # TODO in computer __players, they must decide depending on the shown dice
+        # TODO in computer players, they must decide depending on the shown dice
         return rnd.choice([True, False])
 
     def surrender(self):

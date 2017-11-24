@@ -90,7 +90,9 @@ class Die(object):
         """
         Resets this die to None
         """
-        self = None
+        self.val = None
+        self.numUses = 1
+        self.hidden = True
 
     def test(self):
         """

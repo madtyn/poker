@@ -20,6 +20,10 @@ class Status(object):
         self.__players = players
 
     def current_player(self):
+        """
+        Returns the current player
+        :return: the current player
+        """
         return self.__players.currentPlayer()
 
     def prevPlayer(self):
@@ -29,23 +33,41 @@ class Status(object):
         """
         return self.__players.previousPlayer()
 
-    def nextPlayer(self):
+    def next_player(self):
         """
         Returns the next player to the current one
         :return: the next player
         """
         return self.__players.next_player()
 
-    def changePlayer(self):
+    def change_player(self):
+        """
+
+        :return:
+        """
         self.__players.forwardCurrentPlayer()
         return self.__players.currentPlayer()
 
     def winner(self):
+        """
+        Returns the winner player, if any, otherwise None
+        :return: the winner player
+        """
         if len(self.__players) == 1:
             return self.__players.currentPlayer()
 
     def surrenders(self, player):
+        """
+        Called for doing the needed operations for surrender
+        :param player: the player
+        """
         self.__players.surrenders(player)
+        return player
 
     def loses(self, player):
+        """
+        Called for doing the needed operations for losing
+        :param player: the player
+        """
         self.__players.loses(player)
+        return player

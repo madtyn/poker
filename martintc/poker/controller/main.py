@@ -9,10 +9,10 @@ Created on 26 feb. 2017
 
 import random
 import sys
+from operator import itemgetter
 
-from martintc.poker.model.die import Die
 from martintc.poker.model.diceset import DiceSet
-from martintc.poker.model.players import Robot, Player, Players
+from martintc.poker.model.players import Robot, Players
 from martintc.poker.model.status import Status
 from martintc.poker.view.languages import selectLanguage
 from martintc.poker.view.ui import output
@@ -30,10 +30,9 @@ def main():
     """
     Main function
     """
-    ABSOLUTE_MINIMUM = DiceSet(Die.FACES[:DiceSet.DEFAULT_LENGTH])
 
     player_names = ['Matt', 'Alice', 'Kevin', 'Natalie', 'John', 'Jennifer']
-    NUM_PLAYERS = 3
+    NUM_PLAYERS = 5
     output(_('Liar poker game'))
     output(_('Initializing players'))
     players = Players([Robot(x, lives=1) for x in player_names[:NUM_PLAYERS]])
@@ -47,14 +46,13 @@ def main():
 
         # Only when initial turn
         if initial:
-            minimum = ABSOLUTE_MINIMUM
+            minimum = DiceSet.ABSOLUTE_MINIMUM
             dice_to_tell = minimum
-            initial = False
         else:
             # Player vs player mechanism
             # Now action is given to next player
             # Changing mechanism
-            current_player = status.changePlayer()
+            current_player = status.change_player()
             rejected = not current_player.accepts()
 
             initial = rejected
@@ -80,13 +78,10 @@ def main():
                 output(_('Player {0.name} accepts').format(status.current_player()))
                 minimum = dice_to_tell
                 minimum.show()
+                real_dice.restore()
                 output(_('Minimum is {!r}').format(minimum))
 
         output(_('We start another turn again'))
-
-        # We throw dice
-        real_dice = DiceSet()
-        output(_('Player {0.name} has thrown {1!r}').format(status.current_player(), real_dice))
 
         # TODO Player should estimate straight away if the current dice can be surpassed with these dice
         # TODO Also, the player could use the advantage of hidden dice
@@ -94,6 +89,30 @@ def main():
         # impossibleWithVisibleDice = real_dice.surpassProb(len(real_dice.available_dice())) == 0
         # if impossibleWithRealDice or impossibleWithRealDice:
         #     status.surrenders(status.current_player())
+
+        # We throw dice
+        if initial:
+            real_dice = DiceSet()
+            # TODO If we have surpassed the minimum with the initial throw,
+            # TODO we will lie at least with the real values. So we update minimum
+            # if real_dice > minimum:
+            #     minimum = inferior
+        else:
+            under_minimum = real_dice <= minimum
+            while under_minimum and real_dice.numUses() > 0:
+                for face, freq in sorted(list(real_dice.frequencies().items()), key=itemgetter(1, 0)):
+                    for d in real_dice:
+                        if d.val == face and d.numUses:
+                            d.throw()
+                            real_dice.sort()  # TODO Every time a die is thrown, the diceset should be AUTO-sorted
+                        if real_dice > minimum:
+                            under_minimum = False
+                            break
+                    if not under_minimum:
+                        break
+
+        output(_('Player {0.name} has thrown {1!r}').format(status.current_player(), real_dice))
+        initial = False
 
         # TODO Show / hide
         # output(_('Player {0.name} hides/shows some dice').format(status.current_player()))
@@ -104,8 +123,8 @@ def main():
         if lying:
             dice_to_tell = real_dice.lie()  # This should be higher than real_dice
 
-        if dice_to_tell:
-            output(_('Player {.name} does not give up and says {!s}').format(status.current_player(), dice_to_tell))
+        if dice_to_tell and dice_to_tell > minimum:
+            output(_('Player {.name} does not give up and says {!r}').format(status.current_player(), dice_to_tell))
         else:
             status.surrenders(status.current_player())
 
@@ -120,7 +139,7 @@ def showDice(dice):
     attempts = 0
     while len(dice.hidden_dice()) > MAX_HIDDEN_DICE:
         output('before {!r}'.format(dice))
-        _ = [die.show() for die in dice if die.hidden and random.choice([True, False])]
+        __ = [die.show() for die in dice if die.hidden and random.choice([True, False])]
         output('after {!r}'.format(dice))
         attempts += 1
         if attempts >= 30:
